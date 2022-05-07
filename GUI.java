@@ -14,7 +14,7 @@ public class GUI extends DiveFormulas{
         JFrame frame = new JFrame("Dive Formula Calculator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500, 400);
-        frame.setResizable(true);
+        frame.setResizable(false);
 
         JMenuBar mb = new JMenuBar();
         JButton helpbt = new JButton("Help");
@@ -219,6 +219,25 @@ public class GUI extends DiveFormulas{
                         output.setText("Invalid input!");
                     }
                 }
+                else if (cb.getSelectedItem().toString() == "SMOD"){
+                    try{
+                        double oxPercentage= Double.parseDouble(text1.getText());
+                        if (oxPercentage >= 0 && oxPercentage <= 100){
+                            double res = calculateSMOD(oxPercentage);
+                            output.setText("Maximum operating depth (SMOD) for a dive with " + oxPercentage +    "% O2 and a partial pressure of 1.4 is " + (int)res + " mertres.");
+                        }
+                        else{
+                            output.setText("Invalid percentage of Oxygen as input!");
+                            text1.setText("0");
+                        }
+                    }
+                    catch (NumberFormatException n){
+                        output.setText("Invalid input!");
+                    }
+                }
+
+
+
                 else{
                     output.setText("Please choose a correct operation.");
                 }
