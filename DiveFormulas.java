@@ -194,6 +194,15 @@ public class DiveFormulas {
 
     }
 
+    public double calculateBM(double partialPressure, double depth_metres){
+
+        double depth_ata = (depth_metres/10) + 1;
+        double BM = (partialPressure / depth_ata) * 100;
+
+        return BM;
+
+    }
+
     public void calculatePP(){
 
         Scanner inputScan = new Scanner(System.in);

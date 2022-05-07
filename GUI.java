@@ -201,22 +201,22 @@ public class GUI extends DiveFormulas{
                         if (oxPercentage >= 0 && oxPercentage <= 100){
                             if (parPressure >= 1.1 && parPressure <= 1.6){
                                 double res = calculateMOD(oxPercentage, parPressure);
-                                output.setText("Maximum operating depth (MOD) for a dive with " + oxPercentage +    "% O2 and a partial pressure of " + parPressure + " is " + (int)res + " mertres.");
+                                output.setText("Maximum operating depth (MOD) for a dive with " + oxPercentage + "% O2 and a partial pressure of " + parPressure + " is " + (int)res + " mertres.");
                             }
                             else{
                                 output.setText("Invalid partial pressure as input!");
-                                text1.setText("0");
                                 text2.setText("0");
                             }
                         }
                         else{
                             output.setText("Invalid percentage of Oxygen as input!");
                             text1.setText("0");
-                            text2.setText("0");
                         }
                     }
                     catch (NumberFormatException n){
                         output.setText("Invalid input!");
+                        text1.setText("0");
+                        text2.setText("0");
                     }
                 }
                 else if (cb.getSelectedItem().toString() == "SMOD"){
@@ -224,7 +224,7 @@ public class GUI extends DiveFormulas{
                         double oxPercentage= Double.parseDouble(text1.getText());
                         if (oxPercentage >= 0 && oxPercentage <= 100){
                             double res = calculateSMOD(oxPercentage);
-                            output.setText("Maximum operating depth (SMOD) for a dive with " + oxPercentage +    "% O2 and a partial pressure of 1.4 is " + (int)res + " mertres.");
+                            output.setText("Maximum operating depth (SMOD) for a dive with " + oxPercentage + "% O2 and a partial pressure of 1.4 is " + (int)res + " mertres.");
                         }
                         else{
                             output.setText("Invalid percentage of Oxygen as input!");
@@ -233,6 +233,32 @@ public class GUI extends DiveFormulas{
                     }
                     catch (NumberFormatException n){
                         output.setText("Invalid input!");
+                        text1.setText("0");
+                    }
+                }
+                else if (cb.getSelectedItem().toString() == "BM"){
+                    try{
+                        double parPressure= Double.parseDouble(text2.getText());
+                        double depth= Double.parseDouble(text3.getText());
+                        if (parPressure >= 1.1 && parPressure <= 1.6){
+                            if (depth >= 0){
+                                double res = calculateBM(parPressure, depth);
+                                output.setText("Best mix for a dive to " + depth + " metres with a partial pressure of " + parPressure + " is " + (int)res + "% O2");
+                            }
+                            else{
+                                output.setText("Invalid depth as input!");
+                                text3.setText("0");
+                            }
+                        }
+                        else{
+                            output.setText("Invalid partial pressure of Oxygen as input!");
+                            text2.setText("0");
+                        }
+                    }
+                    catch (NumberFormatException n){
+                        output.setText("Invalid input!");
+                        text2.setText("0");
+                        text3.setText("0");
                     }
                 }
 
