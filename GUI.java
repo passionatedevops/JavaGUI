@@ -51,7 +51,7 @@ public class GUI{
         panel.add(perOfOx);
         panel.add(text1);
 
-        JLabel pressOfOx = new JLabel("Enter the partial pressure of Oxygen (between 1.1 and 1.6 inclusive): ");
+        JLabel pressOfOx = new JLabel("Enter the partial pressure of Oxygen (between 1.1 and 1.6 inclusive ): ");
         JTextField text2 = new JTextField(4);
         text2.setEnabled(false);
         panel.add(pressOfOx);
