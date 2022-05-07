@@ -140,6 +140,15 @@ public class DiveFormulas {
 
     }
 
+    public double calculateMOD(double oxygenMixPercentage, double partialPressure){
+
+        double MOD_ata = partialPressure / (oxygenMixPercentage/100);
+        double MOD_metres = (MOD_ata - 1) * 10;
+
+        return MOD_metres;
+
+    }
+
 
 
     public void calculateSMOD(){

@@ -9,12 +9,12 @@ import java.util.Scanner;
 import java.util.concurrent.Flow;
 import javax.swing.*;
 
-public class GUI{
+public class GUI extends DiveFormulas{
     GUI() {
         JFrame frame = new JFrame("Dive Formula Calculator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 300);
-        frame.setResizable(false);
+        frame.setSize(500, 400);
+        frame.setResizable(true);
 
         JMenuBar mb = new JMenuBar();
         JButton helpbt = new JButton("Help");
@@ -46,19 +46,19 @@ public class GUI{
         frame.add(panel);
 
         JLabel perOfOx = new JLabel("Enter the percentage of Oxygen: ");
-        JTextField text1 = new JTextField(4);
+        JTextField text1 = new JTextField("0",4);
         text1.setEnabled(false);
         panel.add(perOfOx);
         panel.add(text1);
 
         JLabel pressOfOx = new JLabel("Enter the partial pressure of Oxygen (between 1.1 and 1.6 inclusive ): ");
-        JTextField text2 = new JTextField(4);
+        JTextField text2 = new JTextField("0",4);
         text2.setEnabled(false);
         panel.add(pressOfOx);
         panel.add(text2);
 
         JLabel depth = new JLabel("Enter the depth of the dive (in metres): ");
-        JTextField text3 = new JTextField(4);
+        JTextField text3 = new JTextField("0",4);
         text3.setEnabled(false);
         panel.add(depth);
         panel.add(text3);
@@ -68,13 +68,13 @@ public class GUI{
 
         JLabel per_startL = new JLabel("Start: ");
         panel.add(per_startL);
-        JTextField per_startText = new JTextField(4);
+        JTextField per_startText = new JTextField("0",4);
         per_startText.setEnabled(false);
         panel.add(per_startText);
 
         JLabel per_endL = new JLabel("End: ");
         panel.add(per_endL);
-        JTextField per_endText = new JTextField(4);
+        JTextField per_endText = new JTextField("0",4);
         per_endText.setEnabled(false);
         panel.add(per_endText);
 
@@ -83,13 +83,13 @@ public class GUI{
 
         JLabel dep_startL = new JLabel("Start: ");
         panel.add(dep_startL);
-        JTextField dep_startText = new JTextField(4);
+        JTextField dep_startText = new JTextField("0",4);
         dep_startText.setEnabled(false);
         panel.add(dep_startText);
 
         JLabel dep_endL = new JLabel("End: ");
         panel.add(dep_endL);
-        JTextField dep_endText = new JTextField(4);
+        JTextField dep_endText = new JTextField("0",4);
         dep_endText.setEnabled(false);
         panel.add(dep_endText);
 
@@ -97,6 +97,16 @@ public class GUI{
         btn.setPreferredSize(new Dimension(475, 20));
         panel.add(btn);
 
+        JLabel outL = new JLabel("Results will be shown here.", SwingConstants.CENTER);
+        outL.setPreferredSize(new Dimension(475, 20));
+        panel.add(outL);
+
+        JTextArea output = new JTextArea(3, 4);
+        output.setFont(new Font("Monospaced", Font.PLAIN, 15));
+        output.setLineWrap(true);
+        output.setWrapStyleWord(true);
+        output.setPreferredSize(new Dimension(475, 20));
+        panel.add(output);
 
         frame.setVisible(true);
 
@@ -113,8 +123,7 @@ public class GUI{
                     dep_startText.setEnabled(false);
                     dep_endText.setEnabled(false);
 
-                    JFrame err_frame = new JFrame("Error!");
-                    JOptionPane.showMessageDialog(err_frame, "Please choose a correct choice.");
+                    output.setText("Please choose a correct operation.");
                 }
                 else if (cb.getSelectedItem().toString() == "MOD"){
                     text1.setEnabled(true);
@@ -186,11 +195,32 @@ public class GUI{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (cb.getSelectedItem().toString() == "MOD"){
-                    var a = Integer.parseInt(text1.getText());
-                    var b = Integer.parseInt(text2.getText());
-//                    DiveFormulas ins = new DiveFormulas();
-
-                    System.out.println(a + " " + b);
+                    try{
+                        double oxPercentage= Double.parseDouble(text1.getText());
+                        double parPressure = Double.parseDouble(text2.getText());
+                        if (oxPercentage >= 0 && oxPercentage <= 100){
+                            if (parPressure >= 1.1 && parPressure <= 1.6){
+                                double res = calculateMOD(oxPercentage, parPressure);
+                                output.setText("Maximum operating depth (MOD) for a dive with " + oxPercentage +    "% O2 and a partial pressure of " + parPressure + " is " + (int)res + " mertres.");
+                            }
+                            else{
+                                output.setText("Invalid partial pressure as input!");
+                                text1.setText("0");
+                                text2.setText("0");
+                            }
+                        }
+                        else{
+                            output.setText("Invalid percentage of Oxygen as input!");
+                            text1.setText("0");
+                            text2.setText("0");
+                        }
+                    }
+                    catch (NumberFormatException n){
+                        output.setText("Invalid input!");
+                    }
+                }
+                else{
+                    output.setText("Please choose a correct operation.");
                 }
             }
         });
