@@ -22,7 +22,7 @@ public class GUI{
         panel.add(pressOfOx);
         panel.add(text2);
 
-        JLabel depth = new JLabel("Enter the depth of the dive (in metres): ");
+        JLabel depth = new JLabel("Enter the depth of the dive (in metres ): ");
         JTextField text3 = new JTextField(4);
         panel.add(depth);
         panel.add(text3);
