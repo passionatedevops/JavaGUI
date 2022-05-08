@@ -243,7 +243,7 @@ public class GUI extends DiveFormulas{
                         if (parPressure >= 1.1 && parPressure <= 1.6){
                             if (depth >= 0){
                                 double res = calculateBM(parPressure, depth);
-                                output.setText("Best mix for a dive to " + depth + " metres with a partial pressure of " + parPressure + " is " + (int)res + "% O2");
+                                output.setText("Best mix for a dive to " + depth + " metres with a partial pressure of " + parPressure + " is " + (int)res + "% O2.");
                             }
                             else{
                                 output.setText("Invalid depth as input!");
@@ -258,6 +258,31 @@ public class GUI extends DiveFormulas{
                     catch (NumberFormatException n){
                         output.setText("Invalid input!");
                         text2.setText("0");
+                        text3.setText("0");
+                    }
+                }
+                else if (cb.getSelectedItem().toString() == "PP"){
+                    try{
+                        double oxPercentage= Double.parseDouble(text1.getText());
+                        double depth= Double.parseDouble(text3.getText());
+                        if (oxPercentage >= 0 && oxPercentage <= 100){
+                            if (depth >= 0){
+                                double res = calculatePP(oxPercentage, depth);
+                                output.setText("Best mix for a dive to " + depth + " metres with a percentage of Oxygen of " + oxPercentage + "% is " + res + " ata.");
+                            }
+                            else{
+                                output.setText("Invalid depth as input!");
+                                text3.setText("0");
+                            }
+                        }
+                        else{
+                            output.setText("Invalid percentage of Oxygen as input!");
+                            text1.setText("0");
+                        }
+                    }
+                    catch (NumberFormatException n){
+                        output.setText("Invalid input!");
+                        text1.setText("0");
                         text3.setText("0");
                     }
                 }

@@ -219,6 +219,15 @@ public class DiveFormulas {
 
     }
 
+    public double calculatePP(double oxygenMixPercentage, double depth_metres){
+
+        double depth_ata = (depth_metres/10) + 1;
+        double PP = (oxygenMixPercentage / 100) * depth_ata;
+
+        return PP;
+
+    }
+
 
     public void calculateEAD(){
 
