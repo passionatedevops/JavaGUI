@@ -268,7 +268,32 @@ public class GUI extends DiveFormulas{
                         if (oxPercentage >= 0 && oxPercentage <= 100){
                             if (depth >= 0){
                                 double res = calculatePP(oxPercentage, depth);
-                                output.setText("Best mix for a dive to " + depth + " metres with a percentage of Oxygen of " + oxPercentage + "% is " + res + " ata.");
+                                output.setText("Best mix for a dive to " + depth + " metres with a percentage of Oxygen of " + oxPercentage + "% is " + String.format("%.2f",res) + " ata.");
+                            }
+                            else{
+                                output.setText("Invalid depth as input!");
+                                text3.setText("0");
+                            }
+                        }
+                        else{
+                            output.setText("Invalid percentage of Oxygen as input!");
+                            text1.setText("0");
+                        }
+                    }
+                    catch (NumberFormatException n){
+                        output.setText("Invalid input!");
+                        text1.setText("0");
+                        text3.setText("0");
+                    }
+                }
+                else if (cb.getSelectedItem().toString() == "EAD"){
+                    try{
+                        double oxPercentage= Double.parseDouble(text1.getText());
+                        double depth= Double.parseDouble(text3.getText());
+                        if (oxPercentage >= 0 && oxPercentage <= 100){
+                            if (depth >= 0){
+                                double res = calculateEAD(oxPercentage, depth);
+                                output.setText("Equivalent Air Depth for a dive with " + oxPercentage + "% O2 to a depth of " + depth + " metres is " + String.format("%.2f",res) + " metres.");
                             }
                             else{
                                 output.setText("Invalid depth as input!");

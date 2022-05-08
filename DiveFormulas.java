@@ -246,6 +246,16 @@ public class DiveFormulas {
 
     }
 
+    public double calculateEAD(double oxygenMixPercentage, double depth_metres){
+
+        double depth_ata = (depth_metres/10) + 1;
+        double EAD_ata = ((1 - (oxygenMixPercentage/100)) * depth_ata) / 0.79;
+        double EAD_metres = (EAD_ata - 1) * 10;
+
+        return EAD_metres;
+
+    }
+
     public void calculatePPT(){
 
         Scanner inputScan = new Scanner(System.in);
