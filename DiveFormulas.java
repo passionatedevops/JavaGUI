@@ -296,9 +296,71 @@ public class DiveFormulas {
             depth_ata = (depth_metres/10.0) + 1;
 
         }
+
         printPPT(table,start_oxygen,end_oxygen,start_depth, end_depth);
 
 
+    }
+    public String[][] makePPT(int start_oxygen, int end_oxygen, int start_depth, int end_depth){
+
+        int rows = (end_depth - start_depth) / 3 + 1;
+        int columns = (end_oxygen - start_oxygen) + 1;
+
+        int depth_metres = start_depth;
+        double depth_ata = (depth_metres/10.0) + 1;
+
+        double [][] table = new double[rows][columns];
+
+        for (int i=0 ; i < rows; i++){
+            int oxygenMixPercentage = start_oxygen;
+            for (int j = 0 ; j < columns; j++){
+
+                table[i][j] = (oxygenMixPercentage/100.0) * depth_ata;
+                oxygenMixPercentage += 1;
+            }
+            depth_metres += 3;
+            depth_ata = (depth_metres/10.0) + 1;
+
+        }
+        return makeTable(table,start_oxygen,end_oxygen,start_depth, end_depth);
+
+    }
+
+    public String[][] makeTable(double [][] table, int start_oxygen, int end_oxygen, int start_depth, int end_depth){
+        String[][] arr = new String[end_oxygen-start_oxygen+1][(end_depth - start_depth) / 3 + 2];
+
+//        for (int i = 0; i < table.length; i++) { //this equals to the row in our matrix.
+//            for (int j = 0; j < table[i].length; j++) { //this equals to the column in each row.
+//                System.out.print(String.format("%.2f",table[i][j]) + " ");
+//            }
+//            System.out.println(); //change line on console as row comes to end in the matrix.
+//        }
+//
+//        System.out.println("\n");
+
+        for(int i = 0 ; start_oxygen <= end_oxygen ; i++ ){
+
+            arr[i][0] = Integer.toString(start_oxygen++);
+        }
+
+        for (int j = 0 ; j < table.length ; j++ ){
+            for (int k = 0 ; k < table[j].length ; k++){
+                if(table[j][k] > 1.6){
+                    arr[k][j+1] = " ";
+                }
+                else {
+                    arr[k][j+1] = String.format("%.2f",table[j][k]);
+                }
+            }
+        }
+
+//        for (int i = 0; i < arr.length; i++) { //this equals to the row in our matrix.
+//            for (int j = 0; j < arr[i].length; j++) { //this equals to the column in each row.
+//                System.out.print(arr[i][j] + " ");
+//            }
+//            System.out.println(); //change line on console as row comes to end in the matrix.
+//        }
+        return arr;
     }
 
 
