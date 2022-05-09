@@ -322,11 +322,11 @@ public class DiveFormulas {
             depth_ata = (depth_metres/10.0) + 1;
 
         }
-        return makeTable(table,start_oxygen,end_oxygen,start_depth, end_depth);
+        return makePPTtable(table,start_oxygen,end_oxygen,start_depth, end_depth);
 
     }
 
-    public String[][] makeTable(double [][] table, int start_oxygen, int end_oxygen, int start_depth, int end_depth){
+    public String[][] makePPTtable(double [][] table, int start_oxygen, int end_oxygen, int start_depth, int end_depth){
         String[][] arr = new String[end_oxygen-start_oxygen+1][(end_depth - start_depth) / 3 + 2];
 
 //        for (int i = 0; i < table.length; i++) { //this equals to the row in our matrix.
@@ -448,8 +448,35 @@ public class DiveFormulas {
             depth_ata = (depth_metres/10.0) + 1;
 
         }
-        printPPT(table,start_oxygen,end_oxygen,start_depth, end_depth);
+        printEADT(table,start_oxygen,end_oxygen,start_depth, end_depth);
 
+
+    }
+
+    public String[][] makeEADT(int start_oxygen, int end_oxygen, int start_depth, int end_depth){
+
+        int rows = (end_depth - start_depth) / 3 + 1;
+        int columns = (end_oxygen - start_oxygen) + 1;
+
+        int depth_metres = start_depth;
+        double depth_ata = (depth_metres/10.0) + 1;
+
+        double [][] table = new double[rows][columns];
+
+        for (int i=0 ; i < rows; i++){
+            int oxygenMixPercentage = start_oxygen;
+            for (int j = 0 ; j < columns; j++){
+
+                table[i][j] = ((((1 - (oxygenMixPercentage/100)) * depth_ata) / 0.79) - 1) * 10;
+
+                oxygenMixPercentage += 1;
+            }
+            depth_metres += 3;
+            depth_ata = (depth_metres/10.0) + 1;
+
+        }
+
+        return makeEADTtable(table, start_oxygen, end_oxygen, start_depth, end_depth);
 
     }
 
@@ -480,13 +507,25 @@ public class DiveFormulas {
 
             System.out.println();
             depth += 3;
+
         }
     }
 
+    public String[][] makeEADTtable(double [][] table, int start_oxygen, int end_oxygen, int start_depth, int end_depth){
+        String[][] arr = new String[end_oxygen-start_oxygen+1][(end_depth - start_depth) / 3 + 2];
 
+        for(int i = 0 ; start_oxygen <= end_oxygen ; i++ ){
 
+            arr[i][0] = Integer.toString(start_oxygen++);
+        }
 
-
+        for (int j = 0 ; j < table.length ; j++ ){
+            for (int k = 0 ; k < table[j].length ; k++){
+                arr[k][j+1] = String.format("%.2f",table[j][k]);
+            }
+        }
+        return arr;
+    }
 
 }
 

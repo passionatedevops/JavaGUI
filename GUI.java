@@ -344,8 +344,37 @@ public class GUI extends DiveFormulas{
                         dep_endText.setText("0");
                     }
                 }
-
-
+                else if (cb.getSelectedItem().toString() == "EADT"){
+                    try{
+                        int start_oxPer= Integer.parseInt(per_startText.getText());
+                        int end_oxPer= Integer.parseInt(per_endText.getText());
+                        int start_depth= Integer.parseInt(dep_startText.getText());
+                        int end_depth= Integer.parseInt(dep_endText.getText());
+                        if (start_oxPer >= 0 && end_oxPer <= 100 && start_oxPer <= end_oxPer){
+                            if (start_depth >= 0 && start_depth <= end_depth){
+                                String[][] arr = makeEADT(start_oxPer, end_oxPer, start_depth, end_depth);
+                                table(arr, start_oxPer, end_oxPer, start_depth, end_depth, "EADT");
+                            }
+                            else{
+                                output.setText("Invalid depth as input!");
+                                dep_startText.setText("0");
+                                dep_endText.setText("0");
+                            }
+                        }
+                        else{
+                            output.setText("Invalid percentage of Oxygen as input!");
+                            per_startText.setText("0");
+                            per_endText.setText("0");
+                        }
+                    }
+                    catch (NumberFormatException n){
+                        output.setText("Invalid input!");
+                        per_startText.setText("0");
+                        per_endText.setText("0");
+                        dep_startText.setText("0");
+                        dep_endText.setText("0");
+                    }
+                }
                 else{
                     output.setText("Please choose a correct operation.");
                 }
@@ -353,7 +382,7 @@ public class GUI extends DiveFormulas{
         });
     }
 
-    public void table(String[][] arr, int start_oxPer, int end_oxPer, int start_depth, int end_depth, String choice){
+    public void table(String[][] arr, int start_oxPer, int end_oxPer, int start_depth, int end_depth, String tableName){
         int n = (int)(((end_depth-start_depth)/3)+2);
         String[] columnNames = new String[n];
         columnNames[0] = "Oxygen(%)";
@@ -365,7 +394,7 @@ public class GUI extends DiveFormulas{
         JTable table = new JTable(arr, columnNames);
         table.getTableHeader().setFont(new Font("Serif", Font.BOLD, 15));
         table.setFont(new Font("Serif", Font.PLAIN, 15));
-        JFrame tableWin = new JFrame(choice +" for " + start_oxPer + " to " + end_oxPer + " percent Oxygen and depths of " + start_depth + " to " + end_depth + " metres");
+        JFrame tableWin = new JFrame(tableName +" for " + start_oxPer + " to " + end_oxPer + " percent Oxygen and depths of " + start_depth + " to " + end_depth + " metres");
         tableWin.setSize(500, 200);
         JScrollPane sp = new JScrollPane(table);
         sp.setPreferredSize(new Dimension(475, 200));
