@@ -1,20 +1,27 @@
 package divingcalculations;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
 import java.util.EventListener;
 import java.util.Scanner;
 import java.util.concurrent.Flow;
+import javax.imageio.plugins.jpeg.JPEGHuffmanTable;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.Graphics;
 
 public class GUI extends DiveFormulas{
+    String oxyLevel;
     GUI() {
         JFrame frame = new JFrame("Dive Formula Calculator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 400);
+        frame.setSize(500, 360);
         frame.setResizable(false);
+
+        JFrame cylinderFrame = new JFrame("Cylinder");
+        cylinderFrame.setSize(230, 250);
+        cylinderFrame.setLocation(frame.getX() + 550 + frame.getWidth(), frame.getY() + 250);
+        cylinderFrame.setResizable(false);
 
         JMenuBar mb = new JMenuBar();
         JButton helpbt = new JButton("Help");
@@ -47,6 +54,36 @@ public class GUI extends DiveFormulas{
 
         JLabel perOfOx = new JLabel("Enter the percentage of Oxygen: ");
         JTextField text1 = new JTextField("0",4);
+        text1.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                oxyLevel = text1.getText();
+                draw rec = new draw();
+                cylinderFrame.add(rec);
+                cylinderFrame.setVisible(true);
+                frame.setVisible(true);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                oxyLevel = text1.getText();
+                draw rec = new draw();
+                cylinderFrame.add(rec);
+                cylinderFrame.setVisible(true);
+                frame.setVisible(true);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                oxyLevel = text1.getText();
+                draw rec = new draw();
+                cylinderFrame.add(rec);
+                cylinderFrame.setVisible(true);
+                frame.setVisible(true);
+            }
+
+        });
+
         text1.setEnabled(false);
         panel.add(perOfOx);
         panel.add(text1);
@@ -69,12 +106,14 @@ public class GUI extends DiveFormulas{
         JLabel per_startL = new JLabel("Start: ");
         panel.add(per_startL);
         JTextField per_startText = new JTextField("0",4);
+
         per_startText.setEnabled(false);
         panel.add(per_startText);
 
         JLabel per_endL = new JLabel("End: ");
         panel.add(per_endL);
         JTextField per_endText = new JTextField("0",4);
+
         per_endText.setEnabled(false);
         panel.add(per_endText);
 
@@ -108,8 +147,7 @@ public class GUI extends DiveFormulas{
         output.setPreferredSize(new Dimension(475, 20));
         panel.add(output);
 
-
-
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
         cb.addActionListener(new ActionListener() {
@@ -124,7 +162,7 @@ public class GUI extends DiveFormulas{
                     per_endText.setEnabled(false);
                     dep_startText.setEnabled(false);
                     dep_endText.setEnabled(false);
-
+                    cylinderFrame.setVisible(false);
                     output.setText("Please choose a correct operation.");
                 }
                 else if (cb.getSelectedItem().toString() == "MOD"){
@@ -135,6 +173,8 @@ public class GUI extends DiveFormulas{
                     per_endText.setEnabled(false);
                     dep_startText.setEnabled(false);
                     dep_endText.setEnabled(false);
+                    cylinderFrame.setVisible(true);
+                    output.setText(" ");
                 }
                 else if (cb.getSelectedItem().toString() == "SMOD"){
                     text1.setEnabled(true);
@@ -143,7 +183,9 @@ public class GUI extends DiveFormulas{
                     per_startText.setEnabled(false);
                     per_endText.setEnabled(false);
                     dep_startText.setEnabled(false);
-                    dep_endText.setEnabled(false);
+                    dep_endText.setEnabled(true);
+                    cylinderFrame.setVisible(true);
+                    output.setText(" ");
                 }
                 else if (cb.getSelectedItem().toString() == "BM") {
                     text1.setEnabled(false);
@@ -153,6 +195,8 @@ public class GUI extends DiveFormulas{
                     per_endText.setEnabled(false);
                     dep_startText.setEnabled(false);
                     dep_endText.setEnabled(false);
+                    cylinderFrame.setVisible(false);
+                    output.setText(" ");
                 }
                 else if (cb.getSelectedItem().toString() == "PP") {
                     text1.setEnabled(true);
@@ -162,6 +206,8 @@ public class GUI extends DiveFormulas{
                     per_endText.setEnabled(false);
                     dep_startText.setEnabled(false);
                     dep_endText.setEnabled(false);
+                    cylinderFrame.setVisible(true);
+                    output.setText(" ");
                 }
                 else if (cb.getSelectedItem().toString() == "EAD") {
                     text1.setEnabled(true);
@@ -171,6 +217,8 @@ public class GUI extends DiveFormulas{
                     per_endText.setEnabled(false);
                     dep_startText.setEnabled(false);
                     dep_endText.setEnabled(false);
+                    cylinderFrame.setVisible(true);
+                    output.setText(" ");
                 }
                 else if (cb.getSelectedItem().toString() == "PPT") {
                     text1.setEnabled(false);
@@ -180,6 +228,8 @@ public class GUI extends DiveFormulas{
                     per_endText.setEnabled(true);
                     dep_startText.setEnabled(true);
                     dep_endText.setEnabled(true);
+                    cylinderFrame.setVisible(false);
+                    output.setText(" ");
                 }
                 else{
                     text1.setEnabled(false);
@@ -189,6 +239,8 @@ public class GUI extends DiveFormulas{
                     per_endText.setEnabled(true);
                     dep_startText.setEnabled(true);
                     dep_endText.setEnabled(true);
+                    cylinderFrame.setVisible(false);
+                    output.setText(" ");
                 }
             }
         });
@@ -401,6 +453,43 @@ public class GUI extends DiveFormulas{
         tableWin.add(sp);
         tableWin.setVisible(true);
     }
+
+    public class draw extends JPanel{
+        public void paintComponent(Graphics g){
+            int x = 60;
+            int y = 30;
+            int w = 100;
+            int h = 150;
+
+            try{
+                double oxLvl = Double.parseDouble(oxyLevel);
+                if (oxLvl >= 0 && oxLvl <= 100){
+                    double new_y = y + h - h * oxLvl / 100;
+                    double new_h = Math.ceil((h * oxLvl / 100) % (h + 1));
+
+                    super.paintComponent(g);
+                    g.drawRect(x, y, w, h);
+
+                    g.setColor(Color.BLUE); // for oxygen level
+                    g.fillRect(x, (int)new_y, w, (int)new_h);
+                    g.drawString("Oxygen: " + String.format("%.2f",oxLvl) + "%", x+8, y+h+12);
+
+                    g.setColor(Color.RED); // for nitrogen level
+                    g.fillRect(x, y, w, (int)(h-new_h));
+                    g.drawString("Nitrogen: " + String.format("%.2f",100-oxLvl) + "%", x+8, y-6);
+                }
+                else{
+                    super.paintComponent(g);
+                    g.drawRect(x, y, w, h);
+                }
+            }
+            catch (NumberFormatException e){
+                super.paintComponent(g);
+                g.drawRect(x, y, w, h);
+            }
+        }
+    }
+
     public static void main(String args[]) {
         new GUI();
     }
